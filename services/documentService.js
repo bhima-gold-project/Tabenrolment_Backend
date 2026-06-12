@@ -1,11 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const cors = require('cors');
-const { poolPromise, sql } = require("./db");
+const { poolPromise, sql } = require("../db");
 
-router.use(cors());
-
-router.get('/', async (req, res) => {
+const documentService =  async (req, res) => {
   try {
     const pool = await poolPromise;
 
@@ -14,10 +11,10 @@ router.get('/', async (req, res) => {
     const result = await pool.request().query(query);
 
     // Send the fetched data as a response
-    res.json(result.recordset);
+    res.status(500).json(result.recordset);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-});
+}
 
-module.exports = router;
+module.exports = documentService;

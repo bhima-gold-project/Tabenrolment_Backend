@@ -1,15 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const cors = require('cors');
-const { poolPromise, sql } = require("./db");
+const { poolPromise, sql } = require("../db");
 
-router.use(cors());
-
-router.get('/', async (req, res) => {
+const rateService = async (req, res) => {
   const { branch } = req.query;
 
   if (!branch) {
-    return res.status(400).send({ message: 'Branch number is required.' });
+    return res.status(400).send({ message: 'Branch code is required.' });
   }
 
   try {
@@ -20,7 +17,7 @@ router.get('/', async (req, res) => {
       .request()
       .input('branch', sql.VarChar, branch)
       .query(
-        `SELECT Rate FROM vGOLDRATE WHERE CommodityTypeID IN (1,2,6,7) AND Branch_Code = @branch`
+        `SELECT Rate,DisplayName FROM vGOLDRATE WHERE CommodityTypeID IN (1,2,6,7) AND Branch_Code = @branch`
       );
 
     if (result.recordset.length > 0) {
@@ -31,6 +28,6 @@ router.get('/', async (req, res) => {
   } catch (err) {
     return res.status(500).send({ message: 'Server error', error: err.message });
   }
-});
+}
 
-module.exports = router;
+module.exports = rateService;

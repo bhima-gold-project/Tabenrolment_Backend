@@ -1,11 +1,10 @@
 const crypto = require('crypto');
 const express = require('express');
-const { poolPromise, sql } = require('./db');
+const { poolPromise, sql } = require('../db');
 const router = express.Router();
-const axios = require('axios'); // Import axios for making HTTP requests
 
 
-router.get('/:PGLinkID', async (req, res) => {
+const receiptService =  async (req, res) => {
     try {
         const { PGLinkID } = req.params;
         if (!PGLinkID) {
@@ -46,8 +45,6 @@ router.get('/:PGLinkID', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-});
+}
 
-
-
-module.exports = router;
+module.exports = receiptService;

@@ -1,9 +1,8 @@
 
-//-------------------------------------2025-08-24-----------------------------------------------
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
-const { poolPromise, sql } = require("./db");
+const { poolPromise, sql } = require("../db");
 require('dotenv').config();
 
 const router = express.Router();
@@ -13,7 +12,7 @@ router.use(express.json({ limit: "50mb" }));
 const baseUrl = process.env.DOC_BASE_URL;
 
 // Route to insert data into DraftEnrollment table
-router.post("/", async (req, res) => {
+const draftDataService =  async (req, res) => {
   try {
     const {
       Cust_ID,
@@ -337,6 +336,6 @@ router.post("/", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-});
+}
 
-module.exports = router;
+module.exports = draftDataService;
