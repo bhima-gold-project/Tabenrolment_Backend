@@ -2,7 +2,7 @@ const express = require('express');
 const paymentConfirmService = require('../services/paymentConfirmation');
 const router = express.Router()
 
-router.get('/linkid',paymentConfirmService)
+router.post('/linkid',paymentConfirmService)
 
 module.exports = router;
 
