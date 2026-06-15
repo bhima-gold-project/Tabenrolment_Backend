@@ -3,7 +3,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const { poolPromise, sql } = require("./db");
+const { poolPromise, sql } = require("../db");
 dotenv.config();
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.use(cors()); //
 router.use(bodyParser.json());
 
 
-router.post('/api/user/create-payment-link', async (req, res) => {
+const createPaymentLink =  async (req, res) => {
   try {
     const data = req.body;
     const headers = {
@@ -40,10 +40,10 @@ router.post('/api/user/create-payment-link', async (req, res) => {
       details: err.response?.data || err.message,
     });
   }
-});
+}
 
 // // API Route to Fetch Payment Link Details
-router.get('/api/user/FetchDetails/:link_id', async (req, res) => {
+const fetchPaymentLinkDetails =  async (req, res) => {
   const { link_id } = req.params;
 
   const url = `https://sandbox.cashfree.com/pg/links/${link_id}`;
@@ -88,10 +88,10 @@ router.get('/api/user/FetchDetails/:link_id', async (req, res) => {
       details: error.response?.data || error.message,
     });
   }
-});
+}
 
 
-router.get('/api/user/OrderDetails/:link_id', async (req, res) => {
+const fetchOrderDetails =  async (req, res) => {
   const pool = await poolPromise;
   const { link_id } = req.params;
   const url = `https://sandbox.cashfree.com/pg/links/${link_id}/orders?status=ALL`;
@@ -207,10 +207,10 @@ router.get('/api/user/OrderDetails/:link_id', async (req, res) => {
       details: error.message,
     });
   }
-});
+}
 
 //cancel link
-router.get('/api/user/Cancel/:link_id', async (req, res) => {
+const cancelPayment =  async (req, res) => {
   const { link_id } = req.params;
 
   const url = `https://sandbox.cashfree.com/pg/links/${link_id}/cancel`;
@@ -244,6 +244,6 @@ router.get('/api/user/Cancel/:link_id', async (req, res) => {
       details: error.response?.data || error.message,
     });
   }
-});
+}
 
-module.exports = router
+module.exports = {createPaymentLink,fetchPaymentLinkDetails,fetchOrderDetails,cancelPayment}

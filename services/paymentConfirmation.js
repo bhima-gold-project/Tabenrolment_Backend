@@ -1,8 +1,8 @@
 const express = require("express");
-const { poolPromise, sql } = require("./db");
+const { poolPromise, sql } = require("../db");
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+const paymentConfirmation =  async (req, res) => {
   try {
     const {
       CustomerName,
@@ -174,6 +174,6 @@ router.post("/", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-});
+}
 
-module.exports = router;
+module.exports = paymentConfirmation;

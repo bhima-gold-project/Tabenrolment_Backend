@@ -12,14 +12,13 @@ const goldrateRoute = require('./routes/rateRoute');
 const draftRoute = require('./routes/draftRoute');
 const documentlist = require('./routes/documentRoute');
 const receiptRoute = require('./routes/receiptRoute');
+const paymentConfirm = require('./routes/paymentConfirmRoute');
+const webhook = require('./routes/webhookRoute');
+const paymentRoute = require('./routes/paymentRoute');
+const customerRoute = require('./routes/customerRoute');
+//const paymentupdate = require('./routes/paymentUpdateRoute');
+const imagefetch = require('./helper/imagefetch');
 
-const paymentlink = require('./paymentidgen');
-const paymentstatus = require('./createpaymentlink');
-const paymentupdate = require('./paymentupdate');
-const webhook = require('./webhook');
-const customerdata = require('./customerdata');
-const imagefetch = require('./imagefetch');
-const draftcustomer = require('./draftcustomer');
 
 const PORT = 9000;
 
@@ -42,7 +41,6 @@ app.use(
 );
 
 //new routes /////////
-
 app.use('/api', guardianRoute);
 app.use('/api', nomineeRoute);
 app.use('/api', branchRoute);
@@ -52,31 +50,14 @@ app.use('/api', goldrateRoute);
 app.use('/api', draftRoute);
 app.use('/api', documentlist)
 app.use('/api', receiptRoute)
-
-app.use('/api/linkid', paymentlink)
-app.use('', paymentstatus)
-app.use('/api/paymentupdate', paymentupdate)
-app.use('/api/webhook', webhook)
-app.use('/api/customerdetails', customerdata)
+app.use('/api', paymentConfirm)
+app.use('/api', webhook)
+app.use('/api', paymentRoute)
+app.use('/api', customerRoute)
+////////////End point Not used ///////////////
 app.use('/', imagefetch)
-app.use('/api/draftcustomer', draftcustomer)
+//app.use('/api', paymentupdate)
 
-// Set up routes
-// app.use('/api/guardiandetails', guardianRoute);
-// app.use('/api/nomineedetails', nomineeRoute);
-// app.use('/api/branchdetails', branchRoute);
-// app.use('/api', schemeRoute);
-// app.use('/api/goldrate', goldrateRoute);
-// app.use('/api/draftenrollment',imageupload);
-// app.use('/api/doclist',documentlist)
-// app.use('/api/linkid',paymentlink)
-// app.use('',paymentstatus)
-// app.use('/api/paymentupdate',paymentupdate)
-// app.use('/api/webhook',webhook)
-// app.use('/api/customerdetails',customerdata)
-// app.use('/',imagefetch)
-// app.use('/api/resposne',response)
-// app.use('/api/draftcustomer',draftcustomer)
 
 // Connect to the database
 const initializeDatabase = async () => {

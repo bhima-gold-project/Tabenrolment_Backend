@@ -17,7 +17,7 @@ const rateService = async (req, res) => {
       .request()
       .input('branch', sql.VarChar, branch)
       .query(
-        `SELECT Rate,DisplayName FROM vGOLDRATE WHERE CommodityTypeID IN (1,2,6,7) AND Branch_Code = @branch`
+        `SELECT Rate,DisplayName,CommodityTypeID FROM vGOLDRATE WHERE CommodityTypeID IN (1,2,6,7) AND Branch_Code = @branch`
       );
 
     if (result.recordset.length > 0) {

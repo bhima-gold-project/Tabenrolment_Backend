@@ -1,12 +1,12 @@
 const express = require("express");
-const { poolPromise, sql } = require("./db");
+const { poolPromise, sql } = require("../db");
 const axios = require("axios");
 const router = express.Router();
 const FormData = require('form-data');
 const fs = require('fs');
 const path = require('path');
 
-router.post("/", async (req, res) => {
+const paymentUpdateService =  async (req, res) => {
     const data = req.body;
     let transaction;
 
@@ -273,7 +273,7 @@ router.post("/", async (req, res) => {
         if (transaction) await transaction.rollback();
         return res.status(500).json({ message: error.message });
     }
-});
+}
 
-module.exports = router;
+module.exports = paymentUpdateService;
 

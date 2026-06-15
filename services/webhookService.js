@@ -1,6 +1,6 @@
 const express = require('express');
 const axios = require('axios');
-const { poolPromise, sql } = require('./db');
+const { poolPromise, sql } = require('../db');
 const crypto = require('crypto');
 const FormData = require('form-data');
 const path = require('path');
@@ -9,7 +9,7 @@ const router = express.Router();
 const dotenv = require('dotenv')
 dotenv.config();
 
-router.post('', async (req, res) => {
+const webhookService =  async (req, res) => {
   try {
     const rawBody = req.rawBody
     const signature = req.headers['x-webhook-signature']
@@ -288,6 +288,6 @@ router.post('', async (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-});
+}
 
-module.exports = router;
+module.exports = webhookService;
