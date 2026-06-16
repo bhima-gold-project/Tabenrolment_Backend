@@ -16,11 +16,11 @@ const paymentConfirm = require('./routes/paymentConfirmRoute');
 const webhook = require('./routes/webhookRoute');
 const paymentRoute = require('./routes/paymentRoute');
 const customerRoute = require('./routes/customerRoute');
-//const paymentupdate = require('./routes/paymentUpdateRoute');
+const paymentupdate = require('./routes/paymentUpdateRoute');
 const imagefetch = require('./helper/imagefetch');
 
 
-const PORT = 9000;
+const PORT = 9001;
 
 const app = express();
 app.use(morgan('dev'));
@@ -56,7 +56,7 @@ app.use('/api', paymentRoute)
 app.use('/api', customerRoute)
 ////////////End point Not used ///////////////
 app.use('/', imagefetch)
-//app.use('/api', paymentupdate)
+app.use('/api', paymentupdate)
 
 
 // Connect to the database

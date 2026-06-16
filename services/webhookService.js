@@ -31,12 +31,15 @@ const webhookService =  async (req, res) => {
     const orderTags = order?.order_tags;
     const customerData = eventData?.data?.customer_details;
     const paymentData = eventData?.data?.payment;
-
+  
 
     // Step 1: Check for correct event type
-    // if (eventData?.type !== 'PAYMENT_LINK_EVENT') {
-    //   return res.status(400).json({ message: 'Unsupported event type' });
-    // }
+    if (eventData?.type !== 'PAYMENT_SUCCESS_WEBHOOK') {
+      console.log(`Ignoring webhook type: ${eventData?.type}`);
+      return res.status(200).json({
+        message: `Ignored ${eventData?.type}`
+      });
+    }
 
     // Step 2: Check payment status
     if (paymentData?.payment_status !== 'SUCCESS') {
@@ -50,8 +53,6 @@ const webhookService =  async (req, res) => {
 
     const pool = await poolPromise;
     const request = pool.request();
-
-
 
 
     // Step 4: Set parameters for the first update
