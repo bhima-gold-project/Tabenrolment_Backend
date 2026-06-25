@@ -5,6 +5,7 @@ const router = express.Router();
 const FormData = require('form-data');
 const fs = require('fs');
 const path = require('path');
+const { newMemberApiUrl, Customerdataupload } = require("../constant");
 
 const paymentUpdateService =  async (req, res) => {
     const data = req.body;
@@ -108,7 +109,6 @@ const paymentUpdateService =  async (req, res) => {
         }
 
         const draftId = draftIdResult.recordset[0].DraftID;
-        const externalApiUrl = 'https://suvarnagopura.com/VrudhiPortalAPI/api/payment-gateway/newmember-creationTE';
         const requestPayload = { ID: draftId, Status: 'SUCCESS' };
 
         let externalApiResponse = null;
@@ -117,7 +117,7 @@ const paymentUpdateService =  async (req, res) => {
         let crmlogResponseBody = '';
 
         try {
-            const apiResponse = await axios.post(externalApiUrl, requestPayload);
+            const apiResponse = await axios.post(newMemberApiUrl, requestPayload);
             externalApiResponse = apiResponse.data;
             logStatus = apiResponse.status === 200 ? 'OK' : 'Not OK';
             crmlogResponseBody = JSON.stringify(apiResponse.data);
@@ -212,7 +212,6 @@ const paymentUpdateService =  async (req, res) => {
                     BankDetails: bankdata,
                 };
 
-                const postApiUrl = 'https://suvarnagopura.com/CRM/api_db.js/api/Customerdataupload';
                 const form = new FormData();
 
                 form.append('documents', JSON.stringify(postRequestBody));
@@ -232,7 +231,7 @@ const paymentUpdateService =  async (req, res) => {
                     }
                 }
 
-                const crmResponse = await axios.post(postApiUrl, form, {
+                const crmResponse = await axios.post(Customerdataupload, form, {
                     headers: form.getHeaders(),
                     maxContentLength: Infinity,
                     maxBodyLength: Infinity
@@ -254,7 +253,7 @@ const paymentUpdateService =  async (req, res) => {
 
         const logRequest = pool.request();
         logRequest.input('RequestType', sql.VarChar, 'POST');
-        logRequest.input('RequestBody', sql.VarChar, externalApiUrl);
+        logRequest.input('RequestBody', sql.VarChar, newMemberApiUrl);
         logRequest.input('Status', sql.VarChar, logStatus);
         logRequest.input('ResponseBody', sql.NVarChar, crmlogResponseBody);
         logRequest.input('UpdateOn', sql.DateTime, insertedTime);

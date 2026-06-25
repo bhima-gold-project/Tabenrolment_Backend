@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const { poolPromise, sql } = require("../db");
+const { cashfree_BaseUrl } = require('../constant');
 dotenv.config();
 const router = express.Router();
 
@@ -23,7 +24,7 @@ const createPaymentLink =  async (req, res) => {
     };
 
     const response = await axios.post(
-      'https://sandbox.cashfree.com/pg/links',//  const url = `https://api.cashfree.com/pg/links/${link_id}/orders?status=ALL`;
+      `${cashfree_BaseUrl}/links`,//  const url = `https://api.cashfree.com/pg/links/${link_id}/orders?status=ALL`;
       data,
       { headers }
     );
@@ -46,7 +47,7 @@ const createPaymentLink =  async (req, res) => {
 const fetchPaymentLinkDetails =  async (req, res) => {
   const { link_id } = req.params;
 
-  const url = `https://sandbox.cashfree.com/pg/links/${link_id}`;
+  const url = `${cashfree_BaseUrl}/links/${link_id}`;
 
   try {
     // Fetch the link details from Cashfree
@@ -94,8 +95,7 @@ const fetchPaymentLinkDetails =  async (req, res) => {
 const fetchOrderDetails =  async (req, res) => {
   const pool = await poolPromise;
   const { link_id } = req.params;
-  const url = `https://sandbox.cashfree.com/pg/links/${link_id}/orders?status=ALL`;
-  //const url = `https://api.cashfree.com/pg/links/${link_id}/orders?status=ALL`;
+  const url = `${cashfree_BaseUrl}/links/${link_id}/orders?status=ALL`;
   try {
     // Step 1: Fetch Order Details
     const response = await fetch(url, {
@@ -213,7 +213,7 @@ const fetchOrderDetails =  async (req, res) => {
 const cancelPayment =  async (req, res) => {
   const { link_id } = req.params;
 
-  const url = `https://sandbox.cashfree.com/pg/links/${link_id}/cancel`;
+  const url = `${cashfree_BaseUrl}/links/${link_id}/cancel`;
 
   try {
     // Fetch the link details from Cashfree

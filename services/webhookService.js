@@ -6,7 +6,8 @@ const FormData = require('form-data');
 const path = require('path');
 const fs = require('fs');
 const router = express.Router();
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
+const { newMemberApiUrl, Customerdataupload } = require('../constant');
 dotenv.config();
 
 const webhookService =  async (req, res) => {
@@ -31,7 +32,7 @@ const webhookService =  async (req, res) => {
     const orderTags = order?.order_tags;
     const customerData = eventData?.data?.customer_details;
     const paymentData = eventData?.data?.payment;
-  
+
 
     // Step 1: Check for correct event type
     if (eventData?.type !== 'PAYMENT_SUCCESS_WEBHOOK') {
@@ -127,9 +128,6 @@ const webhookService =  async (req, res) => {
 
     const draftId = draftIdResult?.recordset?.[0]?.DraftID;
 
-    // 🔁 Call newmember-creationTE API
-    const newMemberApiUrl = 'https://suvarnagopura.com/VrudhiPortalAPI/api/payment-gateway/newmember-creationTE';
-    //const newMemberApiUrl = 'https://192.168.1.253/VrudhiPortalAPI/api/payment-gateway/newmember-creationTE';
     const requestPayload = { ID: draftId, Status: 'SUCCESS' };
 
     let logStatus = 'Not OK';
@@ -277,7 +275,7 @@ const webhookService =  async (req, res) => {
         }
       }
 
-      await axios.post('https://suvarnagopura.com/CRM/api_db.js/api/Customerdataupload', form, {
+      await axios.post(Customerdataupload, form, {
         headers: form.getHeaders(),
         maxContentLength: Infinity,
         maxBodyLength: Infinity

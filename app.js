@@ -20,7 +20,7 @@ const paymentupdate = require('./routes/paymentUpdateRoute');
 const imagefetch = require('./helper/imagefetch');
 
 
-const PORT = 9001;
+const PORT = 9000;
 
 const app = express();
 app.use(morgan('dev'));
